@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR System using Qwen2.5-VL</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-eye"></i> OCR System <span>using Qwen2.5-VL</span></h1>
+            <p class="subtitle">Upload an image to extract text content. You can customize the prompt to get different types of text analysis.</p>
+        </header>
+
+        <main>
+            <div class="card upload-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-upload"></i> Upload Image</h2>
+                </div>
+                <div class="card-body">
+                    <form id="upload-form">
+                        <div class="drop-zone">
+                            <span class="drop-zone__prompt">Drop image here or click to upload</span>
+                            <input type="file" name="image" id="image-input" class="drop-zone__input" accept="image/*">
+                            <div id="preview-container" class="hidden">
+                                <img id="image-preview" src="" alt="Preview">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="prompt">Custom Prompt (optional):</label>
+                            <textarea id="prompt" name="prompt" rows="2" placeholder="Leave empty for automatic prompt detection based on document type..."></textarea>
+                            <div class="prompt-info">
+                                <i class="fas fa-info-circle"></i> 
+                                <span>Leave empty to enable automatic prompt detection that optimizes for document type (ID cards, receipts, forms, etc.)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="button-group">
+                            <button type="submit" id="extract-btn" class="btn btn-primary">
+                                <i class="fas fa-magic"></i> Extract Text
+                            </button>
+                            
+                            <button type="button" id="clear-cache-btn" class="btn btn-secondary" title="Free up GPU memory if you encounter out-of-memory errors">
+                                <i class="fas fa-broom"></i> Clear Memory
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card result-card hidden" id="result-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-alt"></i> Extracted Text</h2>
+                    <button id="copy-btn" class="btn btn-icon" title="Copy to clipboard">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="loading" class="loading hidden">
+                        <div class="spinner"></div>
+                        <p>Processing image...</p>
+                    </div>
+                    <div id="result-container" class="result-container"></div>
+                </div>
+            </div>
+        </main>
+
+        <section class="memory-info">
+            <div class="memory-card">
+                <div class="memory-icon"><i class="fas fa-microchip"></i></div>
+                <div class="memory-content">
+                    <h4>Out of Memory?</h4>
+                    <p>If you encounter GPU memory errors, use the "Clear Memory" button to free up resources.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tips-section">
+            <h3><i class="fas fa-lightbulb"></i> Tips for best results:</h3>
+            <div class="tips-container">
+                <div class="tip">
+                    <div class="tip-icon"><i class="fas fa-receipt"></i></div>
+                    <div class="tip-content">
+                        <h4>Receipts</h4>
+                        <p>Try "Extract all items with prices from this receipt"</p>
+                    </div>
+                </div>
+                <div class="tip">
+                    <div class="tip-icon"><i class="fas fa-address-card"></i></div>
+                    <div class="tip-content">
+                        <h4>Business Cards</h4>
+                        <p>Try "Extract name, title, company, phone, email and address"</p>
+                    </div>
+                </div>
+                <div class="tip">
+                    <div class="tip-icon"><i class="fas fa-file-alt"></i></div>
+                    <div class="tip-content">
+                        <h4>Documents</h4>
+                        <p>Try "Extract the key information and summarize this document"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Powered by Qwen2.5-VL-7B &copy; <span id="current-year"></span></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 

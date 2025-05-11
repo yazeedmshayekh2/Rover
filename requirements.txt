@@ -1,0 +1,10 @@
+torch
+transformers
+gradio
+Pillow
+accelerate
+bitsandbytes
+qwen-vl-utils
+gunicorn
+flask-cors
+torchvision
